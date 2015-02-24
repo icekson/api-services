@@ -23,7 +23,7 @@
         "psr-4": {"Api\\": "src/Api", "ApiTest\\" : "tests/Api"}
     },
     "extra": {
-        "master": {
+        "branch-alias": {
             "dev-master": "1.0.x-dev"
         }
     }
