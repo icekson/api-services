@@ -1,6 +1,5 @@
 {
-    "name": "icekson/remote-services",
-    "version" : "1.0.0",
+    "name": "icekson/remote-services",    
     "description": "Remote services for build server API",
     "license": "MIT",
     "type": "library",
@@ -22,5 +21,10 @@
     },
     "autoload": {
         "psr-4": {"Api\\": "src/Api", "ApiTest\\" : "tests/Api"}
+    },
+    "extra": {
+        "master": {
+            "dev-master": "1.0.x-dev"
+        }
     }
 }
