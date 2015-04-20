@@ -14,12 +14,17 @@ interface Builder {
     const STATUS_ERROR = "error";
 
     const STATUS_CODE_ERROR = 500;
+    const STATUS_CODE_WARNING = 400;
     const STATUS_CODE_BAD_TOKEN = 403;
     const STATUS_CODE_NOT_PERMITTED = 403;
     const STATUS_CODE_EMPTY_TOKEN = 401;
     const STATUS_CODE_EMPTY_RESULT = 204;
     const STATUS_CODE_SUCCESS = 200;
     const STATUS_CODE_NOT_FOUND = 404;
+    
+    const ERROR_LEVEL_VALIDATION = 0;
+    const ERROR_LEVEL_WARNING = 1;
+    const ERROR_LEVEL_CRITICAL = 2;
 
     public function setStatusCode($code);
     public function getStatusCode();
@@ -31,7 +36,7 @@ interface Builder {
      */
     public function setStatus($status);
 
-    public function setError($msg);
+    public function setError($msg, $level = self::ERROR_LEVEL_WARNING);
 
     public function setCustomResponse($resp);
 
