@@ -73,7 +73,7 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
 
     public function __construct()
     {
-        AnnotationRegistry::registerAutoloadNamespace('Api\\', API_ROOT . "classes/");
+        AnnotationRegistry::registerAutoloadNamespace('Api\\', __DIR__ . "/../");
         $this->annotationsReader = new AnnotationReader();
         $this->servicePaths = new \ArrayObject();
     }
