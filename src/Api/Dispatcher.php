@@ -274,7 +274,7 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
                 throw new BadTokenException("Bad token is given");
             }
             $roles = $identity->getRoles();
-            $configPath = APP . "config/permissions.php";
+            $configPath = APP . "/config/permissions.php";
             if (!file_exists($configPath)) {
                 throw new \InvalidArgumentException("Config file is not found, given : '{$configPath}'");
             }
