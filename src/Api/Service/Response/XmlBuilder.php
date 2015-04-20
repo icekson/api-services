@@ -35,7 +35,7 @@ class XmlBuilder extends ObjectBuilder {
 		$xml->endElement ();
 		$res = $xml->outputMemory ( true );
 		
-		return $res;
+		return '<?xml version="1.0" encoding="utf-8" ?>' . $res;
 	}
 	private function addElement($val, $key) {
 		if (is_int ( $key ) && !is_string($val)) {
@@ -49,7 +49,7 @@ class XmlBuilder extends ObjectBuilder {
 			$this->xml->endElement ();
 		} else {
 			$key = preg_replace ( "/\W+/i", "", $key );
-			if (is_string ( $key ) && strlen ( $key ) > 0) {
+			if (is_string ( $key ) && (int)$key !== 0 && strlen ( $key ) > 0) {
 				$this->xml->writeElement ( $key, $val );
 			}
 		}
