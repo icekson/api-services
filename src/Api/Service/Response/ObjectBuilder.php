@@ -44,15 +44,19 @@ class ObjectBuilder implements ResponseBuilder {
         return $this;
     }
 
-    public function setError($msg){
+    public function setError($msg, $level = self::ERROR_LEVEL_WARNING){
         $this->setStatus(ResponseBuilder::STATUS_ERROR);
         if($this->getStatusCode() === self::STATUS_CODE_SUCCESS){
-            $this->setStatusCode(self::STATUS_CODE_ERROR);
+            if($level === self::ERROR_LEVEL_CRITICAL){
+                $this->setStatusCode(self::STATUS_CODE_ERROR);
+            }else {
+                $this->setStatusCode(self::STATUS_CODE_WARNING);
+            }
         }
         $this->setMessages($msg);
         return $this;
     }
-
+    
     public function setData($data) {
         $this->data = $data;
         return $this;
