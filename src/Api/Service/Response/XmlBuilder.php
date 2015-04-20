@@ -13,13 +13,15 @@ class XmlBuilder extends ObjectBuilder {
 
 	public function result() {
         $msgs = array();
+
         foreach($this->messages as $msg){
             $m = array();
-            $m['message'] = $msg;
+            $m = $msg;
+            $msgs[] = $m;
         }
 		$arr = array(
             'status' => $this->status,
-            'success' => !$this->isError(),
+            'success' => (int)!$this->isError(),
             'messages' => $msgs,
             'data' => (is_array($this->data) ? $this->data : array($this->data))
         );
@@ -57,16 +59,26 @@ class XmlBuilder extends ObjectBuilder {
             {
                 // make string key...
                 $key = "item"/*. (string) $key*/;
+
+                if($xml->getName() === 'messages'){
+                    $key = 'message';
+                }else
+                if($xml->getName() === 'errors'){
+                    $key = 'error';
+                }
             }
 
             // replace anything not alpha numeric
             $key = preg_replace('/[^a-z]/i', '', $key);
 
             // if there is another array found recrusively call this function
-            if (is_array($value))
+            if (is_array($value) || (!is_string($value) && !is_numeric($value) && is_array((array)$value)))
             {
                 $node = $xml->addChild($key);
                 // recrusive call.
+                if(!is_array($value)){
+                    $value = (array)$value;
+                }
                 $this->toXml($value, $rootNodeName, $node);
             }
             else
