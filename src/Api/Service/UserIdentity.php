@@ -14,7 +14,7 @@ class UserIdentity implements IdentityInterface {
     /**
      * @var array
      */
-    private $roles = array();
+    private $roles = array('guest');
 
     /**
      * @return int
@@ -45,6 +45,9 @@ class UserIdentity implements IdentityInterface {
      */
     public function setRoles($roles)
     {
+        if(empty($roles)){
+            return;
+        }
         if(is_array($roles)){
             $this->roles = $roles;
         }else{
