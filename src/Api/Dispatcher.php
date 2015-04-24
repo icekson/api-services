@@ -143,6 +143,10 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
                             }
                         }
                         if ($foundMethod !== null) {
+							$currentHttpMethod = isset($_SERVER['REQUEST_METHOD']) && !empty($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : "GET";
+							if(!empty($methodAnn->method) && strtoupper($methodAnn->method) !== $currentHttpMethod){
+								throw new NotPermittedException("Incorrect HTTP request method");
+							}
                             $this->calledService = $service = $this->createServiceInstance($reflClass);
                             if ($this->checkPermissions($service, $classAnn->name, $methodAnn->name, $token)) {
                                 $foundMethod->invoke($service);
