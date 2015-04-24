@@ -186,9 +186,9 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
             //$this->builder->setStatus(ResponseBuilder::STATUS_ERROR)->setMessages("service action '$name / $action' does not exists, or caused some problems");
         }
         $data = $this->getResponseBuilder()->getData();
-       /* if($this->getResponseBuilder()->getStatusCode() == ResponseBuilder::STATUS_CODE_SUCCESS && empty($data)){
+        if($this->getResponseBuilder()->getStatusCode() == ResponseBuilder::STATUS_CODE_SUCCESS && empty($data)){
             $this->getResponseBuilder()->setStatusCode(ResponseBuilder::STATUS_CODE_EMPTY_RESULT);
-        }*/
+        }
         return $this->getResponseBuilder()->result();
     }
 
