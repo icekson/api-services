@@ -10,6 +10,7 @@ use Api\Service\Permission\Checker;
 use Api\Service\Permission\RolesParser;
 use Api\Service\PropertiesAwareInterface;
 use Api\Service\RemoteServiceInterface;
+use Api\Service\AccessLoggerInterface;
 use \Api\Service\Response\Builder as ResponseBuilder;
 
 use Api\Service\Exception\ServiceException;
@@ -66,6 +67,13 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
      * @var RoleInterface[]|null
      */
     private $roles = null;
+	
+	
+	/**
+	* @var AccessLoggerInterface
+	**/
+	private $accessLogger = null;
+	
     /**
      * @var \Doctrine\Common\Annotations\AnnotationReader
      */
@@ -77,6 +85,16 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
         $this->annotationsReader = new AnnotationReader();
         $this->servicePaths = new \ArrayObject();
     }
+	
+	/**
+	*
+	* @param AccessLoggerInterface $logger
+	* @return $this;
+	**/
+	public function setAccessLogger(AccessLoggerInterface $logger){
+		$this->accessLogger = $logger;		
+		return $this;
+	}
 
     public function dispatch($serviceName, $action, array $params, ResponseBuilder &$builder = null, ServiceLocatorInterface $sm = null)
     {
@@ -128,6 +146,9 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
                             $this->calledService = $service = $this->createServiceInstance($reflClass);
                             if ($this->checkPermissions($service, $classAnn->name, $methodAnn->name, $token)) {
                                 $foundMethod->invoke($service);
+								if($this->accessLogger instanceof AccessLoggerInterface){
+									$this->accessLogger->log($token, $service->getProperties(), $service->getResponseBuilder());									
+								}
                             } else {
                                 throw new NotPermittedException("You have no permission to this API");
                             }
