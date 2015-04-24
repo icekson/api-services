@@ -56,7 +56,7 @@ class ObjectBuilder implements ResponseBuilder {
         $this->setMessages($msg);
         return $this;
     }
-    
+
     public function setData($data) {
         $this->data = $data;
         return $this;

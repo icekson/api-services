@@ -11,7 +11,7 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 
-class BaseService implements ServiceLocatorAwareInterface, RemoteServiceInterface{
+abstract class BaseService implements ServiceLocatorAwareInterface, RemoteServiceInterface{
 
     public function __construct(ServiceLocatorInterface $sm = null, Properties $params = null, ResponseBuilder $builder = null){
         if($builder !== null) {
@@ -23,7 +23,10 @@ class BaseService implements ServiceLocatorAwareInterface, RemoteServiceInterfac
         if($sm !== null) {
             $this->setServiceLocator($sm);
         }
+        $this->init();
     }
+
+    abstract protected function init();
 
     /**
      * @var ServiceLocatorInterface

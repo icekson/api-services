@@ -19,11 +19,12 @@ class XmlBuilder extends ObjectBuilder {
             $m = $msg;
             $msgs[] = $m;
         }
+
 		$arr = array(
             'status' => $this->status,
             'success' => (int)!$this->isError(),
             'messages' => $msgs,
-            'data' => (is_array($this->data) ? $this->data : array($this->data))
+            'data' => (is_array($this->data) ? $this->data : (!empty($this->data) ? array($this->data) : array()))
         );
         $res = $this->toXml($arr);
         return $res;
@@ -69,7 +70,7 @@ class XmlBuilder extends ObjectBuilder {
             }
 
             // replace anything not alpha numeric
-            $key = preg_replace('/[^a-z]/i', '', $key);
+            $key = \Api\Service\Util\Utils::normalizeName($key);
 
             // if there is another array found recrusively call this function
             if (is_array($value) || (!is_string($value) && !is_numeric($value) && is_array((array)$value)))

@@ -24,4 +24,17 @@ class Utils{
         }
         return $key;
     }
+    public static function normalizeName($name, $ucfirst = false)
+    {
+        $filtered = str_replace(array('-', '_'), ' ', (string) $name);
+        $filtered = ucwords(strtolower($filtered));
+        $filtered = str_replace(' ', '', $filtered);
+        if($ucfirst === false){
+            $first = substr($filtered, 0, 1);
+            $string = substr($filtered, 1, strlen($filtered)-1);
+            $first = strtolower($first);
+            $filtered = $first . $string;
+        }
+        return $filtered;
+    }
 }
