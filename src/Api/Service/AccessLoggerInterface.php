@@ -11,11 +11,13 @@ use Api\Service\Util\Properties;
 use Api\Service\Response\Builder as ResponseBuilder;
 
 interface AccessLoggerInterface {
-	
-	/**
-	* @param string $accessToken
-	* @param Properties $params
-	* @param ResponseBuilder $response	
-	**/
-    public function log($accessToken, Properties $params, ResponseBuilder $response);
+
+    /**
+     * @param $accessToken
+     * @param UserIdentity $identity
+     * @param array $params
+     * @param ResponseBuilder $response
+     * @return mixed
+     */
+    public function log($accessToken, $identity, $params, ResponseBuilder $response);
 } 

@@ -44,6 +44,13 @@ class ObjectBuilder implements ResponseBuilder {
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getMessagesAsString() {
+        return $this->messageToString($this->messages);
+    }
+
     public function setError($msg, $level = self::ERROR_LEVEL_WARNING){
         $this->setStatus(ResponseBuilder::STATUS_ERROR);
         if($this->getStatusCode() === self::STATUS_CODE_SUCCESS){

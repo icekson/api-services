@@ -110,6 +110,8 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
         if ($this->servicePaths->count() === 0) {
             throw new ServiceException("No services is registered");
         }
+        $service = null;
+        $identity = null;
 
         try {
             $token = $this->retrieveToken();
@@ -150,9 +152,7 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
                             $this->calledService = $service = $this->createServiceInstance($reflClass);
                             if ($this->checkPermissions($service, $classAnn->name, $methodAnn->name, $token)) {
                                 $foundMethod->invoke($service);
-								if($this->accessLogger instanceof AccessLoggerInterface){
-									$this->accessLogger->log($token, $service->getProperties(), $service->getResponseBuilder());									
-								}
+                                $identity = $service->getIdentity();
                             } else {
                                 throw new NotPermittedException("You have no permission to this API");
                             }
@@ -187,7 +187,10 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
         }
         $data = $this->getResponseBuilder()->getData();
         if($this->getResponseBuilder()->getStatusCode() == ResponseBuilder::STATUS_CODE_SUCCESS && empty($data)){
-            $this->getResponseBuilder()->setStatusCode(ResponseBuilder::STATUS_CODE_EMPTY_RESULT);
+           // $this->getResponseBuilder()->setStatusCode(ResponseBuilder::STATUS_CODE_EMPTY_RESULT);
+        }
+        if($this->accessLogger instanceof AccessLoggerInterface){
+            $this->accessLogger->log($token, $identity, $_REQUEST, $this->getResponseBuilder());
         }
         return $this->getResponseBuilder()->result();
     }

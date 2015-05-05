@@ -41,6 +41,10 @@ interface Builder {
     public function setCustomResponse($resp);
 
     /**
+     * @return string
+     */
+    public function getMessagesAsString();
+    /**
      * 
      * @param string|array $messages
      * @return Builder
