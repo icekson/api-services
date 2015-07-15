@@ -21,6 +21,8 @@ class ObjectBuilder implements ResponseBuilder {
     protected $customElements = array();
 
     protected $statusCode = self::STATUS_CODE_SUCCESS;
+    
+    protected $errorCode = 0;
 
 
     protected $customResponse = null;
@@ -63,6 +65,10 @@ class ObjectBuilder implements ResponseBuilder {
         $this->setMessages($msg);
         return $this;
     }
+    
+    public function setErrorCode($code){
+        $this->errorCode = (int)$code;
+    }
 
     public function setData($data) {
         $this->data = $data;
@@ -97,11 +103,12 @@ class ObjectBuilder implements ResponseBuilder {
     protected function _getResult(){
         if($this->customResponse === null){
             $result =  array(
-                "status" => $this->status,
+                "status" => $this->status,                
                 "success" => $this->status == self::STATUS_SUCCESS,
+                "statusCode": $this->errorCode,
                 "message" => $this->messageToString($this->messages),
                 "{$this->rootElementName}" => $this->data
-            );
+            );            
             foreach ( $this->customElements as $key => $val ) {
                 $result [$key] = $val;
             }
