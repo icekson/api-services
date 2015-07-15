@@ -37,6 +37,8 @@ interface Builder {
     public function setStatus($status);
 
     public function setError($msg, $level = self::ERROR_LEVEL_WARNING);
+    
+    public function setErrorCode($code);
 
     public function setCustomResponse($resp);
 
