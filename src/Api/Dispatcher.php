@@ -31,6 +31,8 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
 {
 
     const ACCESS_TOKEN_PARAM_NAME = "access_token";
+    
+    private $tokenName = self::ACCESS_TOKEN_PARAM_NAME;
 
     private $debug = true;
 
@@ -281,7 +283,7 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
      */
     public function retrieveToken()
     {
-        $token = $this->getProperties()->get(self::ACCESS_TOKEN_PARAM_NAME, null);
+        $token = $this->getProperties()->get($this->tokenName, null);
         if ($token === null) {
             throw new NoTokenException("Access token is empty");
         }
