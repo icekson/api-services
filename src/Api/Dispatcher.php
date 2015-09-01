@@ -114,7 +114,7 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
         }
         $service = null;
         $identity = null;
-
+        $token = null;
         try {
             $token = $this->retrieveToken();
 
