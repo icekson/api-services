@@ -105,7 +105,7 @@ class ObjectBuilder implements ResponseBuilder {
             $result =  array(
                 "status" => $this->status,                
                 "success" => $this->status == self::STATUS_SUCCESS,
-                "statusCode": $this->errorCode,
+                "statusCode" => $this->errorCode,
                 "message" => $this->messageToString($this->messages),
                 "{$this->rootElementName}" => $this->data
             );            
