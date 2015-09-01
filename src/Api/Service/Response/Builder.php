@@ -22,9 +22,10 @@ interface Builder {
     const STATUS_CODE_SUCCESS = 200;
     const STATUS_CODE_NOT_FOUND = 404;
 
-    const ERROR_LEVEL_VALIDATION = 0;
-    const ERROR_LEVEL_WARNING = 1;
-    const ERROR_LEVEL_CRITICAL = 2;
+    const ERROR_LEVEL_SUCCESS = 0;
+    const ERROR_LEVEL_VALIDATION = 1;
+    const ERROR_LEVEL_WARNING = 2;
+    const ERROR_LEVEL_CRITICAL = 3;
 
     public function setStatusCode($code);
     public function getStatusCode();
