@@ -62,6 +62,9 @@ class ObjectBuilder implements ResponseBuilder {
                 $this->setStatusCode(self::STATUS_CODE_WARNING);
             }
         }
+        if($this->errorCode == 0){
+            $this->setErrorCode(1);
+        }
         $this->setMessages($msg);
         return $this;
     }
@@ -105,7 +108,7 @@ class ObjectBuilder implements ResponseBuilder {
             $result =  array(
                 "status" => $this->status,                
                 "success" => $this->status == self::STATUS_SUCCESS,
-                "statusCode" => $this->errorCode,
+                "errorCode" => $this->errorCode,
                 "message" => $this->messageToString($this->messages),
                 "{$this->rootElementName}" => $this->data
             );            
