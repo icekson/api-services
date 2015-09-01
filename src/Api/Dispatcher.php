@@ -87,6 +87,15 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
         $this->annotationsReader = new AnnotationReader();
         $this->servicePaths = new \ArrayObject();
     }
+    
+        /**
+     * @param $name
+     * @return $this
+     */
+    public function setTokenParameterName($name){
+        $this->tokenName = $name;
+        return $this;
+    }
 	
 	/**
 	*
