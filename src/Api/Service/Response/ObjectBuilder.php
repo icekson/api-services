@@ -105,16 +105,17 @@ class ObjectBuilder implements ResponseBuilder {
 
     protected function _getResult(){
         if($this->customResponse === null){
-            $result =  array(
+             $result =  array(
                 "status" => $this->status,                
                 "success" => $this->status == self::STATUS_SUCCESS,
                 "errorCode" => $this->errorCode,
                 "message" => $this->messageToString($this->messages),
-                "{$this->rootElementName}" => $this->data
-            );            
+            );
+
             foreach ( $this->customElements as $key => $val ) {
                 $result [$key] = $val;
             }
+            $result[$this->rootElementName] =  $this->data;
         }else{
             $result = $this->customResponse;
         }
