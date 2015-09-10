@@ -109,6 +109,7 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
 
     public function dispatch($serviceName, $action, array $params, ResponseBuilder &$builder = null, ServiceLocatorInterface $sm = null)
     {
+        $timeStart = microtime(true);
         $this->calledService = null;
         if ($builder !== null) {
             $this->setResponseBuilder($builder);
@@ -200,8 +201,9 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
         if($this->getResponseBuilder()->getStatusCode() == ResponseBuilder::STATUS_CODE_SUCCESS && empty($data)){
            // $this->getResponseBuilder()->setStatusCode(ResponseBuilder::STATUS_CODE_EMPTY_RESULT);
         }
+        $executedTime = microtime(true) - $timeStart;
         if($this->accessLogger instanceof AccessLoggerInterface){
-            $this->accessLogger->log($token, $identity, $_REQUEST, $this->getResponseBuilder());
+            $this->accessLogger->log($token, $identity, $_REQUEST, $this->getResponseBuilder(), $serviceName, $action, $executedTime);
         }
         return $this->getResponseBuilder()->result();
     }
