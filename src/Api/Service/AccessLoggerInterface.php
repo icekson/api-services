@@ -19,5 +19,5 @@ interface AccessLoggerInterface {
      * @param ResponseBuilder $response
      * @return mixed
      */
-    public function log($accessToken, $identity, $params, ResponseBuilder $response);
+    public function log($accessToken, $identity, $params, ResponseBuilder $response, $service = null, $action = null, $executionTime = null);
 } 
