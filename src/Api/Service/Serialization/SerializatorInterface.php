@@ -6,7 +6,10 @@
 
 namespace Api\Service\Serialization;
 
+use Api\Service\Util\IArrayExchange;
+
 interface SerializatorInterface{
 	
-	public function serialize(IArrayExchange $entity, array $neededColumns);
+	public function serialize();
+
 }

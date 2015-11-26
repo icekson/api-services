@@ -2,16 +2,21 @@
 
 namespace Api;
 
+use Api\Service\AnnotatedServiceInterface;
 use Api\Service\AnnotationsHelper;
+use Api\Service\ConfigurableServiceInterface;
 use Api\Service\Exception\ServiceException;
 use Api\Service\RemoteServiceInterface;
 use Api\Service\Response\Builder as ResponseBuilder;
+use Api\Service\Serialization\DefaultSerializator;
+use Api\Service\Serialization\SerializatorInterface;
+use Api\Service\Util\IArrayExchange;
 use Api\Service\Util\Properties;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 
-abstract class BaseService implements ServiceLocatorAwareInterface, RemoteServiceInterface{
+abstract class BaseService implements ServiceLocatorAwareInterface, RemoteServiceInterface, AnnotatedServiceInterface{
 
     public function __construct(ServiceLocatorInterface $sm = null, Properties $params = null, ResponseBuilder $builder = null){
         if($builder !== null) {
@@ -117,6 +122,97 @@ abstract class BaseService implements ServiceLocatorAwareInterface, RemoteServic
         }
         return new AnnotationsHelper($this, $lastCall['function']);
 
+    }
+
+    /**
+     * @param AnnotationsHelper $helper
+     * @return array
+     */
+    public function getColumns(AnnotationsHelper $helper) {
+        $acceptableColumns = $helper->getAcceptableColumns();
+        $colsString = $this->getProperties()->get('columns', 'all');
+        if (is_string($colsString) && trim($colsString) === 'all') {
+            return $acceptableColumns;
+        }
+        if (!is_array($colsString)) {
+            $cols = explode(",", $colsString);
+        } else {
+            $cols = $colsString;
+        }
+        $res = [];
+        foreach ($cols as $col) {
+            if (!in_array(trim($col), $acceptableColumns)) {
+                throw new \InvalidArgumentException("You are trying to request is not an acceptable column name '$col'. Here is the list of acceptable columns: " . implode(", ", $acceptableColumns));
+            } else {
+                $res[] = $col;
+            }
+        }
+        return array_unique(array_values($res));
+    }
+
+    /**
+     * @param AnnotationsHelper $helper
+     * @return array
+     */
+    public function getFilters(AnnotationsHelper $helper) {
+        $acceptableFilters = $helper->getAcceptableFilters();
+
+        $filters = $this->getProperties()->get('filters', []);
+        $res = [];
+        foreach ($filters as $name => $filter) {
+            if (!in_array(trim($name), $acceptableFilters)) {
+                throw new \InvalidArgumentException("You are trying to use is not an acceptable filter name '$name'. Here is the list of acceptable filters: " . implode(", ", $acceptableFilters));
+            } else {
+                $res[$name] = $filter;
+            }
+        }
+        return $res;
+    }
+
+    /**
+     * @param AnnotationsHelper $helper
+     * @return array
+     */
+    public function getParameters() {
+        $parameters = $this->getProperties()->get('parameters', []);
+
+        return $parameters;
+    }
+
+    /**
+     * @param AnnotationsHelper $helper
+     * @return array
+     */
+    public function getGroupings(AnnotationsHelper $helper) {
+        $acceptableGroupings = $helper->getAcceptableGroupings();
+        $colsString = $this->getProperties()->get('group', null);
+        if ($colsString === null) {
+            return [];
+        }
+        if (!is_array($colsString)) {
+            $cols = explode(",", $colsString);
+        } else {
+            $cols = $colsString;
+        }
+        $res = [];
+        foreach ($cols as $col) {
+            if (!in_array(trim($col), $acceptableGroupings)) {
+                throw new \InvalidArgumentException("You are trying to use is not an acceptable grouping column name '$col'. Here is the list of acceptable grouping columns: " . implode(", ", $acceptableGroupings));
+            } else {
+                $res[] = $col;
+            }
+        }
+        return array_unique(array_values($res));
+    }
+
+    /**
+     * @param IArrayExchange $array
+     * @return SerializatorInterface
+     */
+    public function createSerializator(IArrayExchange $array)
+    {
+        $serializator = new DefaultSerializator($array, $this);
+        return $serializator;
     }
 
 }
