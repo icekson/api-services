@@ -8,7 +8,7 @@
 namespace Api\Service\Util;
 
 class Properties implements IArrayExchange {
-	private $params = null;
+	protected $params = null;
 	
 	public function __construct(array $params = array()){
 		$this->params = new \ArrayObject($params);
