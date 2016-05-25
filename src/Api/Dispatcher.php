@@ -23,6 +23,7 @@ use \Api\Service\Response\ResponseBuilderAwareInterface;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Rbac\Role\RoleInterface;
+use Zend\Cache\Storage\StorageInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -81,11 +82,21 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
      */
     private $annotationsReader = null;
 
-    public function __construct()
+    /**
+     * @var null|StorageInterface
+     */
+    private $cache = null;
+
+    /**
+     * Dispatcher constructor.
+     * @param StorageInterface|null $cache
+     */
+    public function __construct(StorageInterface $cache = null)
     {
         AnnotationRegistry::registerAutoloadNamespace('Api\\', __DIR__ . "/../");
         $this->annotationsReader = new AnnotationReader();
         $this->servicePaths = new \ArrayObject();
+        $this->cache = $cache;
     }
     
         /**
@@ -107,6 +118,16 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
 		return $this;
 	}
 
+    /**
+     * @param $serviceName
+     * @param $action
+     * @param array $params
+     * @param ResponseBuilder|null $builder
+     * @param ServiceLocatorInterface|null $sm
+     * @return mixed
+     * @throws ServiceException
+     * @throws \Exception
+     */
     public function dispatch($serviceName, $action, array $params, ResponseBuilder &$builder = null, ServiceLocatorInterface $sm = null)
     {
         $timeStart = microtime(true);
@@ -129,7 +150,7 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
             $token = $this->retrieveToken();
 
             $serviceFound = false;
-            $finder = new ServiceFinder();
+            $finder = new ServiceFinder($this->cache);
             foreach ($this->servicePaths as $path) {
                 $dir = new \DirectoryIterator($path);
 

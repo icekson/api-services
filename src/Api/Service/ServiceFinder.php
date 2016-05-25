@@ -8,10 +8,11 @@ namespace Api\Service;
 
 
 use Zend\Cache\Storage\Adapter\Memory;
+use Zend\Cache\Storage\StorageInterface;
 
 class ServiceFinder {
 
-    /** @var null|Memory */
+    /** @var null|StorageInterface */
     private static $cache = null;
 
     public function construct()
@@ -19,6 +20,14 @@ class ServiceFinder {
         if(self::$cache === null){
             self::$cache = new Memory();
         }
+    }
+
+    /**
+     * @param StorageInterface $storage
+     */
+    public function setCacheStorage(StorageInterface $storage)
+    {
+        self::$cache = $storage;
     }
 
     /**
