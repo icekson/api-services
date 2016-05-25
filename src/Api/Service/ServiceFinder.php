@@ -7,13 +7,35 @@
 namespace Api\Service;
 
 
+use Zend\Cache\Storage\Adapter\Memory;
+
 class ServiceFinder {
+
+    /** @var null|Memory */
+    private static $cache = null;
+
+    public function construct()
+    {
+        if(self::$cache === null){
+            self::$cache = new Memory();
+        }
+    }
 
     /**
      * @return \ReflectionClass[]
      */
     public function scanFolder(\DirectoryIterator $dir){
         $res = array();
+
+        $key = $this->createCacheKey($dir);
+        $fromCache = null;
+        if(self::$cache->hasItem($key)){
+            $fromCache = self::$cache->getItem($key);
+        }
+        if($fromCache){
+            return $fromCache;
+        }
+
         foreach ( $dir as $file ) {
             if($file->isFile()){
                 $classes = $this->extractClassesNames($file->getFileInfo());
@@ -27,7 +49,14 @@ class ServiceFinder {
                 }
             }
         }
+        self::$cache->setItem($key, $res);
         return $res;
+    }
+
+    private function createCacheKey(\DirectoryIterator $dir)
+    {
+        $key = md5($dir->getPathname());
+        return $key;
     }
 
 

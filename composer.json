@@ -13,6 +13,7 @@
     "require": {
         "php": ">=5.4",
         "zendframework/zend-servicemanager": "2.*",
+		"zendframework/zend-cache": "2.*",
         "psr/log": "1.0.*",
         "monolog/monolog": "~1.12",
         "doctrine/annotations": "~1.2",
