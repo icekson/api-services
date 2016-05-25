@@ -15,7 +15,11 @@ class ServiceFinder {
     /** @var null|StorageInterface */
     private static $cache = null;
 
-    public function __construct(StorageInterface $storage)
+    /**
+     * ServiceFinder constructor.
+     * @param StorageInterface|null $storage
+     */
+    public function __construct(StorageInterface $storage = null)
     {
         if(self::$cache === null){
             if($storage !== null){
