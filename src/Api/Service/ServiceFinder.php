@@ -47,7 +47,7 @@ class ServiceFinder {
         $key = $this->createCacheKey($dir);
         $fromCache = null;
         if(self::$cache->hasItem($key)){
-            $fromCache = self::$cache->getItem($key);
+            $fromCache = @unserialize(self::$cache->getItem($key));
         }
         if($fromCache){
             return $fromCache;
@@ -66,7 +66,7 @@ class ServiceFinder {
                 }
             }
         }
-        self::$cache->setItem($key, $res);
+        self::$cache->setItem($key, @serialize($res));
         return $res;
     }
 
