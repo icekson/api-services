@@ -164,7 +164,9 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
                             $this->calledService = $service = $this->createServiceInstance($reflClass);
                             if ($this->checkPermissions($service, $classAnn->name, $methodAnn->name, $token)) {
                                 $foundMethod->invoke($service);
-                                $identity = $service->getIdentity();
+                                if($reflClass->hasMethod('getIdentity')) {
+                                    $identity = $service->getIdentity();
+                                }
                             } else {
                                 throw new NotPermittedException("You have no permission to this API");
                             }
