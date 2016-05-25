@@ -48,6 +48,13 @@ class ServiceFinder {
         $fromCache = null;
         if(self::$cache->hasItem($key)){
             $fromCache = @unserialize(self::$cache->getItem($key));
+            $res = [];
+            if($fromCache) {
+                foreach ($fromCache as $c) {
+                    $res[] = new \ReflectionClass($c->name);
+                }
+                $fromCache = $res;
+            }
         }
         if($fromCache){
             return $fromCache;
