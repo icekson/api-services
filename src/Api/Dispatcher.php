@@ -4,6 +4,7 @@ namespace Api;
 
 
 use Api\Service\Exception\BadTokenException;
+use Api\Service\Exception\MaintenanceModeException;
 use Api\Service\Exception\NoTokenException;
 use Api\Service\Exception\NotPermittedException;
 use Api\Service\Permission\Checker;
@@ -32,7 +33,7 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
 {
 
     const ACCESS_TOKEN_PARAM_NAME = "access_token";
-    
+
     private $tokenName = self::ACCESS_TOKEN_PARAM_NAME;
 
     private $debug = true;
@@ -70,13 +71,13 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
      * @var RoleInterface[]|null
      */
     private $roles = null;
-	
-	
+
+
 	/**
 	* @var AccessLoggerInterface
 	**/
 	private $accessLogger = null;
-	
+
     /**
      * @var \Doctrine\Common\Annotations\AnnotationReader
      */
@@ -86,6 +87,13 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
      * @var null|StorageInterface
      */
     private $cache = null;
+
+    /**
+     * @var bool
+     */
+    private $isMaintenance = false;
+
+    private $maintenanceModeMessage = "Sorry, but service currently unavailable.";
 
     /**
      * Dispatcher constructor.
@@ -98,7 +106,7 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
         $this->servicePaths = new \ArrayObject();
         $this->cache = $cache;
     }
-    
+
         /**
      * @param $name
      * @return $this
@@ -107,16 +115,28 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
         $this->tokenName = $name;
         return $this;
     }
-	
+
 	/**
 	*
 	* @param AccessLoggerInterface $logger
 	* @return $this;
 	**/
 	public function setAccessLogger(AccessLoggerInterface $logger){
-		$this->accessLogger = $logger;		
+		$this->accessLogger = $logger;
 		return $this;
 	}
+
+    /**
+     * @param $flag
+     * @param null $message
+     */
+    public function setMaintenanceMode($flag, $message = null)
+    {
+        $this->isMaintenance = (bool)$flag;
+        if ($message !== null) {
+            $this->maintenanceModeMessage = $message;
+        }
+    }
 
     /**
      * @param $serviceName
@@ -143,10 +163,16 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
         if ($this->servicePaths->count() === 0) {
             throw new ServiceException("No services is registered");
         }
+
         $service = null;
         $identity = null;
         $token = null;
         try {
+
+            if($this->isMaintenance){
+                throw new MaintenanceModeException($this->maintenanceModeMessage);
+            }
+
             $token = $this->retrieveToken();
 
             $serviceFound = false;
@@ -210,6 +236,9 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
             $this->getResponseBuilder()->setError($ex->getMessage());
         } catch (NotPermittedException $ex) {
             $this->getResponseBuilder()->setStatusCode(ResponseBuilder::STATUS_CODE_NOT_PERMITTED);
+            $this->getResponseBuilder()->setError($ex->getMessage());
+        } catch (MaintenanceModeException $ex) {
+            $this->getResponseBuilder()->setStatusCode(ResponseBuilder::STATUS_CODE_WARNING);
             $this->getResponseBuilder()->setError($ex->getMessage());
         } catch (\Exception $ex) {
             if ($this->debug) {
