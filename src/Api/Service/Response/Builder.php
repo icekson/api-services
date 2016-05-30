@@ -21,6 +21,7 @@ interface Builder {
     const STATUS_CODE_EMPTY_RESULT = 204;
     const STATUS_CODE_SUCCESS = 200;
     const STATUS_CODE_NOT_FOUND = 404;
+    const STATUS_CODE_MAINTENANCE = 503;
 
     const ERROR_LEVEL_SUCCESS = 0;
     const ERROR_LEVEL_VALIDATION = 1;

@@ -250,7 +250,7 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
             $this->getResponseBuilder()->setStatusCode(ResponseBuilder::STATUS_CODE_NOT_PERMITTED);
             $this->getResponseBuilder()->setError($ex->getMessage());
         } catch (MaintenanceModeException $ex) {
-            $this->getResponseBuilder()->setStatusCode(ResponseBuilder::STATUS_CODE_WARNING);
+            $this->getResponseBuilder()->setStatusCode(ResponseBuilder::STATUS_CODE_MAINTENANCE);
             $this->getResponseBuilder()->setError($ex->getMessage());
         } catch (\Exception $ex) {
             if ($this->debug) {
