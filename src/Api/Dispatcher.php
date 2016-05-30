@@ -36,7 +36,7 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
 
     private $tokenName = self::ACCESS_TOKEN_PARAM_NAME;
 
-    private $debug = true;
+    private $debug = false;
 
 
     /**
@@ -129,6 +129,7 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
     /**
      * @param $flag
      * @param null $message
+     * @return $this
      */
     public function setMaintenanceMode($flag, $message = null)
     {
@@ -136,6 +137,17 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
         if ($message !== null) {
             $this->maintenanceModeMessage = $message;
         }
+        return $this;
+    }
+
+    /**
+     * @param $state
+     * @return $this
+     */
+    public function setDebug($state)
+    {
+        $this->debug = (bool)$state;
+        return $this;
     }
 
     /**
