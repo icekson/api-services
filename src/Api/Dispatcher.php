@@ -256,7 +256,11 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
             if ($this->debug) {
                 throw $ex;
             } else {
-                $sm->get('Api\App')->log->error($ex->getMessage());
+                try {
+                    $sm->get('Api\App')->log->error($ex->getMessage());
+                }catch (\Exception $e){
+
+                }
                 $this->getResponseBuilder()->setError("api service error");
             }
             //$this->builder->setStatus(ResponseBuilder::STATUS_ERROR)->setMessages("service action '$name / $action' does not exists, or caused some problems");
