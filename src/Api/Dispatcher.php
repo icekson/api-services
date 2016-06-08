@@ -383,7 +383,7 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
             if (!file_exists($configPath)) {
                 throw new \InvalidArgumentException("Config file is not found, given : '{$configPath}'");
             }
-            $parser = new RolesParser(include_once $configPath);
+            $parser = new RolesParser(include $configPath);
             $rolesList = $parser->parse();
             foreach ($rolesList as $r) {
                 foreach ($roles as $cr) {
