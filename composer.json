@@ -3,6 +3,7 @@
     "description": "Remote services for build server API",
     "license": "MIT",
     "type": "library",
+	"version": "v0.9.0.0",
     "authors": [
         {
             "name": "Alexey Itsekson",
@@ -20,7 +21,7 @@
         "zfr/rbac": "~1.2"
     },
      "require-dev": {
-         "phpunit/phpunit" : ">=3.7.8",
+        "phpunit/phpunit" : ">=3.7.8",
         "phpunit/phpunit-mock-objects" : "1.2.1"                
     },
     "autoload": {
@@ -28,7 +29,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0.x-dev"
+            "stable": "0.9.0.x"
         }
     }
 }
