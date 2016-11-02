@@ -338,7 +338,7 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
      * @param \ReflectionClass $class
      * @return RemoteServiceInterface
      */
-    private function createServiceInstance(\ReflectionClass $class)
+    protected function createServiceInstance(\ReflectionClass $class)
     {
         $service = $class->newInstance();
         if (!$service instanceof RemoteServiceInterface) {
