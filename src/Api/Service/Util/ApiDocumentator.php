@@ -99,6 +99,7 @@ class ApiDocumentator
                                 "name" => $methodAnn->name,
                                 "url" => $classAnn->name . "/" . $methodAnn->name,
                                 "description" => "",
+                                "deprecated" => false,
                                 "method" => empty($methodAnn->method) ? "ANY" : strtoupper($methodAnn->method),
                                 "type" => strtoupper($this->type),
                                 "inputParams" =>[]
@@ -108,8 +109,7 @@ class ApiDocumentator
 
                                 $skip = false;
                                 foreach ($annotations as $annotation) {
-                                    if($annotation instanceof \Api\Service\Annotation\Deprecated ||
-                                        $annotation instanceof \Api\Service\Annotation\TestApi){
+                                    if($annotation instanceof \Api\Service\Annotation\TestApi){
 
                                         $skip = true;
                                     }
@@ -121,6 +121,8 @@ class ApiDocumentator
                                 foreach ($annotations as $annotation) {
                                     if($annotation instanceof \Api\Service\Annotation\Description){
                                         $apiDesc['description'] = $annotation->value;
+                                    }else if($annotation instanceof \Api\Service\Annotation\Deprecated){
+                                        $apiDesc['deprecated'] = true;
                                     }else if($annotation instanceof \Api\Service\Annotation\Input){
                                         $apiDesc['inputParams'][] = [
                                             "name" => $annotation->name,

@@ -26,13 +26,14 @@ class ApiDocumentatorTest extends \PHPUnit_Framework_TestCase{
 
        $this->assertCount(4, $data);
        $this->assertTrue(isset($data['test3']));
-       $this->assertCount(2, $data['test3']);
+       $this->assertCount(3, $data['test3']);
 
        $apis = $data['test3'];
        foreach ($apis as $api) {
            $this->assertTrue(isset($api['name']));
            $this->assertTrue(isset($api['url']));
            $this->assertTrue(isset($api['description']));
+           $this->assertTrue(isset($api['deprecated']));
            $this->assertTrue(isset($api['inputParams']));
            $this->assertTrue(isset($api['type']));
            $this->assertTrue(in_array($api['method'], ["ANY", "GET", "POST", "DELETE", "PUT"]), "given type is {$api['method']}");
@@ -75,7 +76,7 @@ class ApiDocumentatorTest extends \PHPUnit_Framework_TestCase{
                $this->assertFalse(true);
            }
            if($api['name'] === "test-api4"){
-               $this->assertFalse(true);
+               $this->assertTrue($api['deprecated']);
            }
        }
 
