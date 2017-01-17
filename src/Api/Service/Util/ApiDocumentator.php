@@ -98,7 +98,7 @@ class ApiDocumentator
                                 "name" => $methodAnn->name,
                                 "url" => $classAnn->name . "/" . $methodAnn->name,
                                 "description" => "",
-                                "method" => strtoupper($methodAnn->method),
+                                "method" => empty($methodAnn->method) ? "ANY" : strtoupper($methodAnn->method),
                                 "type" => $this->type,
                                 "inputParams" =>[]
                             ];
