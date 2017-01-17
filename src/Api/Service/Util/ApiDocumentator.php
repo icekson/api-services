@@ -8,6 +8,7 @@ namespace Api\Service\Util;
 
 
 use Api\Dispatcher;
+use Api\Service\Annotation\Deprecated;
 use Api\Service\Response\XmlBuilder;
 use Api\Service\ServiceFinder;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -99,18 +100,31 @@ class ApiDocumentator
                                 "url" => $classAnn->name . "/" . $methodAnn->name,
                                 "description" => "",
                                 "method" => empty($methodAnn->method) ? "ANY" : strtoupper($methodAnn->method),
-                                "type" => $this->type,
+                                "type" => strtoupper($this->type),
                                 "inputParams" =>[]
                             ];
                             $annotations = $this->reader->getMethodAnnotations($m);
                             if(!empty($annotations)){
+
+                                $skip = false;
+                                foreach ($annotations as $annotation) {
+                                    if($annotation instanceof \Api\Service\Annotation\Deprecated ||
+                                        $annotation instanceof \Api\Service\Annotation\TestApi){
+
+                                        $skip = true;
+                                    }
+                                }
+
+                                if($skip){
+                                    continue;
+                                }
                                 foreach ($annotations as $annotation) {
                                     if($annotation instanceof \Api\Service\Annotation\Description){
                                         $apiDesc['description'] = $annotation->value;
                                     }else if($annotation instanceof \Api\Service\Annotation\Input){
                                         $apiDesc['inputParams'][] = [
                                             "name" => $annotation->name,
-                                            "type" => strtoupper($annotation->type),
+                                            "type" => $annotation->type,
                                             "required" => $annotation->required,
                                             "acceptableValues" => $annotation->acceptableValues
                                         ];

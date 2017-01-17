@@ -13,6 +13,8 @@ use Api\Service\Annotation\ServiceAction;
 use Api\Service\Annotation\Service;
 use Api\Service\Annotation\Description;
 use Api\Service\Annotation\Input;
+use Api\Service\Annotation\Deprecated;
+use Api\Service\Annotation\TestApi;
 use Api\Service\Response\Builder as ResponseBuilder;
 
 
@@ -42,6 +44,28 @@ class Test3Service extends BaseService
      * @Input(name="testParam1", type="array", acceptableValues={"test1","test2","test3"})
      */
     public function getStatistics()
+    {
+        // TODO: Implement getStatistics() method.
+    }
+
+
+    /**
+     * @ServiceAction(name="test-api3")
+     * @TestApi
+     * @Input(name="testParam1", type="array", acceptableValues={"test1","test2","test3"})
+     */
+    public function testApi()
+    {
+        // TODO: Implement getStatistics() method.
+    }
+
+
+    /**
+     * @ServiceAction(name="test-api4")
+     * @Deprecated
+     * @Input(name="testParam1", type="array", acceptableValues={"test1","test2","test3"})
+     */
+    public function deprecatedApi()
     {
         // TODO: Implement getStatistics() method.
     }

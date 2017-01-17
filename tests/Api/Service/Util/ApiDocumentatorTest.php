@@ -35,12 +35,13 @@ class ApiDocumentatorTest extends \PHPUnit_Framework_TestCase{
            $this->assertTrue(isset($api['description']));
            $this->assertTrue(isset($api['inputParams']));
            $this->assertTrue(isset($api['type']));
-           $this->assertEquals("json", $api['type']);
+           $this->assertTrue(in_array($api['method'], ["ANY", "GET", "POST", "DELETE", "PUT"]), "given type is {$api['method']}");
+           $this->assertEquals("JSON", $api['type']);
 
            foreach ($api['inputParams'] as $inputParam) {
                $this->assertTrue(isset($inputParam['name']));
                $this->assertTrue(isset($inputParam['type']));
-               $this->assertTrue(in_array($inputParam['type'], ["int", "string", "array"]));
+               $this->assertTrue(in_array($inputParam['type'], ["int", "string", "array"]), "given type is {$inputParam['type']}");
                $this->assertTrue(isset($inputParam['acceptableValues']));
                $this->assertTrue(is_array($inputParam['acceptableValues']));
                $this->assertTrue(isset($inputParam['required']));
@@ -69,6 +70,12 @@ class ApiDocumentatorTest extends \PHPUnit_Framework_TestCase{
            if($api['name'] === "test-api2"){
                $this->assertCount(1, $api['inputParams']);
                $this->assertCount(3, $api['inputParams'][0]["acceptableValues"]);
+           }
+           if($api['name'] === "test-api3"){
+               $this->assertFalse(true);
+           }
+           if($api['name'] === "test-api4"){
+               $this->assertFalse(true);
            }
        }
 
