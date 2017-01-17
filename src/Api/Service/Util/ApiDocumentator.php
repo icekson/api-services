@@ -110,7 +110,7 @@ class ApiDocumentator
                                     }else if($annotation instanceof \Api\Service\Annotation\Input){
                                         $apiDesc['inputParams'][] = [
                                             "name" => $annotation->name,
-                                            "type" => $annotation->type,
+                                            "type" => strtoupper($annotation->type),
                                             "required" => $annotation->required,
                                             "acceptableValues" => $annotation->acceptableValues
                                         ];
