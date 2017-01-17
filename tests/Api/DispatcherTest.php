@@ -23,7 +23,6 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase implements ServiceLocat
     private $sm;
 
     protected function setUp() {
-        $this->db = \PaDbConnection::getInstance();
         $conf = require_once API_ROOT . "/config/service_manager.php";
         $config = $conf['service_manager'];
         $conf = new \Zend\ServiceManager\Config($config);

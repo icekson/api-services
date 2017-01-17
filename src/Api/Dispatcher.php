@@ -277,6 +277,14 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
     }
 
     /**
+     * @return AnnotationReader
+     */
+    public function getAnnotationsReader()
+    {
+        return $this->annotationsReader;
+    }
+
+    /**
      * @return RemoteServiceInterface|null
      */
     public function getCalledService()
@@ -292,6 +300,14 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
     {
         $this->servicePaths->append($servicesPath);
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getServicesPaths()
+    {
+        return $this->servicePaths->getArrayCopy();
     }
 
     /**

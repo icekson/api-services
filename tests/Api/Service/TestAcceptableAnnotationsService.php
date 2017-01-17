@@ -24,6 +24,7 @@ use Api\Service\Annotation\AcceptableGroupings;
 class TestAcceptableAnnotationsService extends BaseService implements SecurityServiceInterface
 {
 
+    protected function init(){}
 
     /**
      * @ServiceAction(name="testActionDefault")
@@ -70,8 +71,7 @@ class TestAcceptableAnnotationsService extends BaseService implements SecuritySe
 
 
     /**
-     * @ServiceAction(name="testActionDefaultAndRole")
-
+     * @ServiceAction(name="testActionDefaultAndRole2")
      */
     public function test3()
     {

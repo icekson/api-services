@@ -36,7 +36,7 @@ class JsonBuilderTest extends \PHPUnit_Framework_TestCase{
         );
         $builder->setData($data);
 
-        $test = '{"status":"success","success":true,"message":"","data":{"some1":"test","some2":3}}';
+        $test = '{"status":"success","success":true,"errorCode":0,"message":"","data":{"some1":"test","some2":3}}';
         $this->assertEquals($test, $builder->result());
         $decoded = json_decode($builder->result());
 
@@ -47,20 +47,20 @@ class JsonBuilderTest extends \PHPUnit_Framework_TestCase{
 
     public function testSetError(){
         $builder = new JsonBuilder();
-        $test = '{"status":"success","success":true,"message":"","data":""}';
+        $test = '{"status":"success","success":true,"errorCode":0,"message":"","data":""}';
 
         $this->assertEquals($test, $builder->result());
         $builder->setError("some error");
-        $test = '{"status":"error","success":false,"message":"some error","data":""}';
+        $test = '{"status":"error","success":false,"errorCode":1,"message":"some error","data":""}';
         $this->assertEquals($test, $builder->result());
         $this->assertTrue($builder->isError());
-        $this->assertEquals(Builder::STATUS_CODE_ERROR, $builder->getStatusCode());
+        $this->assertEquals(Builder::STATUS_CODE_WARNING, $builder->getStatusCode());
     }
 
     public function testSetCustomRootDataElement(){
         $builder = new JsonBuilder();
         $builder->setRootElementName("anotherData");
-        $test = '{"status":"success","success":true,"message":"","anotherData":1}';
+        $test = '{"status":"success","success":true,"errorCode":0,"message":"","anotherData":1}';
         $builder->setData(1);
 
         $this->assertEquals($test, $builder->result());

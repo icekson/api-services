@@ -22,6 +22,8 @@ class Test2Service extends BaseService implements RemoteServiceInterface, Securi
 {
 
 
+    protected function init(){}
+
     /**
      * @ServiceAction(name="GetTestData")
      */

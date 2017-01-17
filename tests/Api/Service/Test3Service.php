@@ -11,20 +11,26 @@ use Api\Service\UserIdentity;
 use Api\Service\Util\Properties;
 use Api\Service\Annotation\ServiceAction;
 use Api\Service\Annotation\Service;
+use Api\Service\Annotation\Description;
+use Api\Service\Annotation\Input;
 use Api\Service\Response\Builder as ResponseBuilder;
 
 
 
 /**
  * Class NewsService
- * @Service(name = "test1")
+ * @Service(name = "test3")
  */
-class Test1Service extends BaseService
+class Test3Service extends BaseService
 {
 
     protected function init(){}
     /**
-     * @ServiceAction(name="GetOffers")
+     * @ServiceAction(name="test-api1")
+     * @Description("Some description 1")
+     * @Input(name="testParam1", type="int")
+     * @Input(name="testParam2", type="string", required="true")
+     * @Input(name="testParam3", type="array", acceptableValues="test1,test2,test3")
      */
     public function getOffers()
     {
@@ -32,7 +38,8 @@ class Test1Service extends BaseService
     }
 
     /**
-     * @ServiceAction(name="GetStatistics")
+     * @ServiceAction(name="test-api2")
+     * @Input(name="testParam1", type="array", acceptableValues={"test1","test2","test3"})
      */
     public function getStatistics()
     {
