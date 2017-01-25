@@ -25,6 +25,8 @@ class Input {
 
     public $required = false;
 
+    public $description = "";
+
     public $acceptableValues = [];
 
 
@@ -41,8 +43,13 @@ class Input {
             $values['required'] = $this->required;
         }
 
+        if(!isset($values['description'])){
+            $values['description'] = $this->description;
+        }
+
         $this->name = $values['name'];
         $this->type = $values['type'];
+        $this->description = $values['description'];
         $this->required = $values['required'] === "true" ? true : false;
 
 
