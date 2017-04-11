@@ -2,12 +2,9 @@
 
 namespace ApiTest;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-
 define("API_ROOT" , realpath(TESTS_PATH . "../../api/") . "/");
 
-class AllTests extends \PHPUnit_Framework_TestSuite {
+class AllTests extends \PHPUnit\Framework\TestSuite {
 
     public static function suite() {
         $suite = new \ApiTest\AllTests('Api');

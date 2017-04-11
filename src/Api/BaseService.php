@@ -2,6 +2,7 @@
 
 namespace Api;
 
+use Api\Container\ContainerAwareInterface;
 use Api\Service\AnnotatedServiceInterface;
 use Api\Service\AnnotationsHelper;
 use Api\Service\ConfigurableServiceInterface;
@@ -12,21 +13,20 @@ use Api\Service\Serialization\DefaultSerializator;
 use Api\Service\Serialization\SerializatorInterface;
 use Api\Service\Util\IArrayExchange;
 use Api\Service\Util\Properties;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Psr\Container\ContainerInterface;
 
 
-abstract class BaseService implements ServiceLocatorAwareInterface, RemoteServiceInterface, AnnotatedServiceInterface{
+abstract class BaseService implements ContainerAwareInterface, RemoteServiceInterface, AnnotatedServiceInterface{
 
-    public function __construct(ServiceLocatorInterface $sm = null, Properties $params = null, ResponseBuilder $builder = null){
+    public function __construct(ContainerInterface $container = null, Properties $params = null, ResponseBuilder $builder = null){
         if($builder !== null) {
             $this->setResponseBuilder($builder);
         }
         if($params !== null) {
             $this->setProperties($params);
         }
-        if($sm !== null) {
-            $this->setServiceLocator($sm);
+        if($container !== null) {
+            $this->setContainer($container);
         }
         $this->init();
     }
@@ -34,9 +34,9 @@ abstract class BaseService implements ServiceLocatorAwareInterface, RemoteServic
     abstract protected function init();
 
     /**
-     * @var ServiceLocatorInterface
+     * @var ContainerInterface
      */
-    protected $serviceManager;
+    protected $container;
 
     /**
      * @var Properties
@@ -63,21 +63,22 @@ abstract class BaseService implements ServiceLocatorAwareInterface, RemoteServic
     /**
      * Set service locator
      *
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
      */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    public function setContainer(ContainerInterface $container)
     {
-        $this->serviceManager = $serviceLocator;
+        $this->container = $container;
+        return $this;
     }
 
     /**
      * Get service locator
      *
-     * @return ServiceLocatorInterface
+     * @return ContainerInterface
      */
-    public function getServiceLocator()
+    public function getContainer()
     {
-        return $this->serviceManager;
+        return $this->container;
     }
 
     /**

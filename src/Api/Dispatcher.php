@@ -3,6 +3,7 @@
 namespace Api;
 
 
+use Api\Container\ContainerAwareInterface;
 use Api\Service\Exception\BadTokenException;
 use Api\Service\Exception\MaintenanceModeException;
 use Api\Service\Exception\NoTokenException;
@@ -23,13 +24,12 @@ use \Api\Service\Util\Properties;
 use \Api\Service\Response\ResponseBuilderAwareInterface;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Psr\Container\ContainerInterface;
 use Rbac\Role\RoleInterface;
 use Zend\Cache\Storage\StorageInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 
-class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterface, ServiceLocatorAwareInterface
+class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterface, ContainerAwareInterface
 {
 
     const ACCESS_TOKEN_PARAM_NAME = "access_token";
@@ -51,9 +51,9 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
     private $params;
 
     /**
-     * @var ServiceLocatorInterface
+     * @var ContainerInterface
      */
-    private $serviceManager;
+    private $container;
 
 
     /**
@@ -155,12 +155,12 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
      * @param $action
      * @param array $params
      * @param ResponseBuilder|null $builder
-     * @param ServiceLocatorInterface|null $sm
+     * @param ContainerInterface|null $container
      * @return mixed
      * @throws ServiceException
      * @throws \Exception
      */
-    public function dispatch($serviceName, $action, array $params, ResponseBuilder &$builder = null, ServiceLocatorInterface $sm = null)
+    public function dispatch($serviceName, $action, array $params, ResponseBuilder &$builder = null, ContainerInterface $container = null)
     {
         $timeStart = microtime(true);
         $this->calledService = null;
@@ -168,8 +168,8 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
             $this->setResponseBuilder($builder);
         }
 
-        if ($sm !== null) {
-            $this->setServiceLocator($sm);
+        if ($container !== null) {
+            $this->setContainer($container);
         }
         $this->setProperties(new Properties($params));
         if ($this->servicePaths->count() === 0) {
@@ -363,8 +363,8 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
         if ($service instanceof ResponseBuilderAwareInterface) {
             $service->setResponseBuilder($this->getResponseBuilder());
         }
-        if ($service instanceof ServiceLocatorAwareInterface) {
-            $service->setServiceLocator($this->getServiceLocator());
+        if ($service instanceof ContainerAwareInterface) {
+            $service->setContainer($this->getContainer());
         }
         if ($service instanceof PropertiesAwareInterface) {
             $service->setProperties($this->getProperties());
@@ -444,22 +444,22 @@ class Dispatcher implements ResponseBuilderAwareInterface, PropertiesAwareInterf
     }
 
     /**
-     * Set service locator
-     *
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @return $this
      */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    public function setContainer(ContainerInterface $container)
     {
-        $this->serviceManager = $serviceLocator;
+        $this->container = $container;
+        return $this;
     }
 
     /**
-     * Get service locator
+     * Get container
      *
-     * @return ServiceLocatorInterface
+     * @return ContainerInterface
      */
-    public function getServiceLocator()
+    public function getContainer()
     {
-        return $this->serviceManager;
+        return $this->container;
     }
 }

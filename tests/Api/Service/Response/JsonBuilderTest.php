@@ -10,7 +10,7 @@ namespace ApiTest\Service\Response;
 use Api\Service\Response\Builder;
 use Api\Service\Response\JsonBuilder;
 
-class JsonBuilderTest extends \PHPUnit_Framework_TestCase{
+class JsonBuilderTest extends \PHPUnit\Framework\TestCase{
 
     public function testSetData(){
         $builder = new JsonBuilder();

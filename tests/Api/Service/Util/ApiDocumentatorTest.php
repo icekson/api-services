@@ -11,7 +11,7 @@ namespace ApiTest\Service\Util;
 use Api\Service\Util\ApiDocumentator;
 use Api\Service\Util\Properties;
 
-class ApiDocumentatorTest extends \PHPUnit_Framework_TestCase{
+class ApiDocumentatorTest extends \PHPUnit\Framework\TestCase{
 
    public function testGenerateDocs()
    {

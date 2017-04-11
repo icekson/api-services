@@ -9,7 +9,7 @@ namespace ApiTest\Service\Permission;
 
 use Api\Service\Permission\RolesParser;
 
-class RolesParserTest extends \PHPUnit_Framework_TestCase{
+class RolesParserTest extends \PHPUnit\Framework\TestCase{
 
     public function testParser(){
         $conf = $this->getConfig();

@@ -9,7 +9,7 @@ namespace ApiTest\Service;
 
 use Api\Service\ServiceFinder;
 
-class ServiceFinderTest extends \PHPUnit_Framework_TestCase{
+class ServiceFinderTest extends \PHPUnit\Framework\TestCase{
     public function testFindServices(){
         $finder = new ServiceFinder();
         $dir = new \DirectoryIterator(TESTS_PATH . "Api/Service/");

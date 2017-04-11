@@ -12,7 +12,7 @@ use Rbac\Role\HierarchicalRole;
 use Rbac\Role\Role;
 use Rbac\Role\RoleInterface;
 
-class CheckerTest extends \PHPUnit_Framework_TestCase{
+class CheckerTest extends \PHPUnit\Framework\TestCase{
 
 
     /**

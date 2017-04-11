@@ -7,27 +7,27 @@
 namespace ApiTest;
 
 
+use Api\Container\ContainerAwareInterface;
+use Api\Container\ContainerImpl;
 use Api\Dispatcher;
 use Api\Service\Exception\NoTokenException;
 use Api\Service\Exception\ServiceException;
 use Api\Service\Response\Builder;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Psr\Container\ContainerInterface;
 
-class DispatcherTest extends \PHPUnit_Framework_TestCase implements ServiceLocatorAwareInterface{
+
+class DispatcherTest extends \PHPUnit\Framework\TestCase implements ContainerAwareInterface {
 
     /**
-     * @var ServiceLocatorInterface
+     * @var ContainerInterface
      */
     private $sm;
 
     protected function setUp() {
-        $conf = require_once API_ROOT . "/config/service_manager.php";
+        $conf = require_once API_ROOT . "tests/service_manager.php";
         $config = $conf['service_manager'];
-        $conf = new \Zend\ServiceManager\Config($config);
-        $sm = new \Zend\ServiceManager\ServiceManager($conf);
-        $this->setServiceLocator($sm);
+        $sm = new ContainerImpl($config);
+        $this->setContainer($sm);
     }
 
     protected function tearDown() {
@@ -36,19 +36,19 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase implements ServiceLocat
     /**
      * Set service locator
      *
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param \Psr\Container\ContainerInterface $container
      */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    public function setContainer(ContainerInterface $container)
     {
-        $this->sm = $serviceLocator;
+        $this->sm = $container;
     }
 
     /**
      * Get service locator
      *
-     * @return ServiceLocatorInterface
+     * @return ContainerInterface
      */
-    public function getServiceLocator()
+    public function getContainer()
     {
         return $this->sm;
     }
@@ -56,12 +56,12 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase implements ServiceLocat
     public function testDispatch(){
         $dispatcher = new \Api\Dispatcher();
 
-        $response = $this->getMock("Api\\Service\\Response\\Builder");
+        $response = $this->getMockBuilder("Api\\Service\\Response\\Builder")->getMock();
         $response->expects($this->never())
             ->method("result");
         $exeption = null;
         try {
-            $dispatcher->dispatch("test", "test", ['token' => 'some-token'], $response, $this->getServiceLocator());
+            $dispatcher->dispatch("test", "test", ['token' => 'some-token'], $response, $this->getContainer());
         }catch(\Exception $e){
             $exeption = $e;
         }
@@ -70,17 +70,17 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase implements ServiceLocat
         $dispatcher->registerServicesPath(TESTS_PATH . "tests/Api/Service/");
 
 
-        $response = $this->getMock("Api\\Service\\Response\\Builder");
+        $response = $this->getMockBuilder("Api\\Service\\Response\\Builder")->getMock();
         $response->expects($this->once())
             ->method("setStatusCode")
             ->with($this->equalTo(Builder::STATUS_CODE_EMPTY_TOKEN));
         $response->expects($this->once())
             ->method("result");
-        $dispatcher->dispatch("test1", "GetOffers", [], $response, $this->getServiceLocator());
+        $dispatcher->dispatch("test1", "GetOffers", [], $response, $this->getContainer());
 
-        $response = $this->getMock("Api\\Service\\Response\\Builder");
+        $response = $this->getMockBuilder("Api\\Service\\Response\\Builder")->getMock();
         try {
-            $dispatcher->dispatch("test1", "GetOffers", ['access_token' => 'some-token'], $response, $this->getServiceLocator());
+            $dispatcher->dispatch("test1", "GetOffers", ['access_token' => 'some-token'], $response, $this->getContainer());
         }catch(ServiceException $e) {
             $this->assertFalse(true);
         }
@@ -88,12 +88,12 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase implements ServiceLocat
         $this->assertInstanceOf("ApiTest\\Service\\Test1Service", $service);
 
 
-        $response = $this->getMock("Api\\Service\\Response\\Builder");
+        $response = $this->getMockBuilder("Api\\Service\\Response\\Builder")->getMock();
         $response->expects($this->once())
             ->method("setStatusCode")
             ->with($this->equalTo(Builder::STATUS_CODE_NOT_FOUND));
 
-        $dispatcher->dispatch("not-service", "GetOffers", ['access_token' => 'some-token2'], $response, $this->getServiceLocator());
+        $dispatcher->dispatch("not-service", "GetOffers", ['access_token' => 'some-token2'], $response, $this->getContainer());
         $service = $dispatcher->getCalledService();
         $this->assertNull($service);
 

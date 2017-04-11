@@ -10,7 +10,7 @@ namespace ApiTest\Service\Util;
 
 use Api\Service\Util\Properties;
 
-class PropertiesTest extends \PHPUnit_Framework_TestCase{
+class PropertiesTest extends \PHPUnit\Framework\TestCase{
 
     public function testGetSetProperty(){
         $props = new Properties([]);

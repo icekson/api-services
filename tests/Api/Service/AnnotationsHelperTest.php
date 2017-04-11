@@ -10,12 +10,12 @@ namespace ApiTest\Service;
 
 use Api\Service\AnnotationsHelper;
 
-class AnnotationsHelperTest extends \PHPUnit_Framework_TestCase {
+class AnnotationsHelperTest extends \PHPUnit\Framework\TestCase {
 
     public function testGetDefaultColumnsInstance(){
-        $respBuilder = $this->getMock("Api\\Service\\Response\\Builder");
-        $params = $this->getMock("Api\\Service\\Util\\Properties");
-        $sm = $this->getMock("Zend\\ServiceManager\\ServiceLocatorInterface");
+        $respBuilder = $this->getMockBuilder("Api\\Service\\Response\\Builder")->getMock();
+        $params = $this->getMockBuilder("Api\\Service\\Util\\Properties")->getMock();
+        $sm = $this->getMockBuilder("Psr\\Container\\ContainerInterface")->getMock();
 
         $service = new \ApiTest\Service\TestAcceptableAnnotationsService($sm, $params, $respBuilder);
         $helper = new AnnotationsHelper($service, "test1");
@@ -28,9 +28,9 @@ class AnnotationsHelperTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testGetColumnsRelatedToRoleInstance(){
-        $respBuilder = $this->getMock("Api\\Service\\Response\\Builder");
-        $params = $this->getMock("Api\\Service\\Util\\Properties");
-        $sm = $this->getMock("Zend\\ServiceManager\\ServiceLocatorInterface");
+        $respBuilder = $this->getMockBuilder("Api\\Service\\Response\\Builder")->getMock();
+        $params = $this->getMockBuilder("Api\\Service\\Util\\Properties")->getMock();
+        $sm = $this->getMockBuilder("Psr\\Container\\ContainerInterface")->getMock();
 
         $service = new \ApiTest\Service\TestAcceptableAnnotationsService($sm, $params, $respBuilder);
         $helper = new AnnotationsHelper($service, "test2");
@@ -42,9 +42,9 @@ class AnnotationsHelperTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testGetColumnsEmpty(){
-        $respBuilder = $this->getMock("Api\\Service\\Response\\Builder");
-        $params = $this->getMock("Api\\Service\\Util\\Properties");
-        $sm = $this->getMock("Zend\\ServiceManager\\ServiceLocatorInterface");
+        $respBuilder = $this->getMockBuilder("Api\\Service\\Response\\Builder")->getMock();
+        $params = $this->getMockBuilder("Api\\Service\\Util\\Properties")->getMock();
+        $sm = $this->getMockBuilder("Psr\\Container\\ContainerInterface")->getMock();
 
         $service = new \ApiTest\Service\TestAcceptableAnnotationsService($sm, $params, $respBuilder);
         $helper = new AnnotationsHelper($service, "test3");
@@ -56,9 +56,9 @@ class AnnotationsHelperTest extends \PHPUnit_Framework_TestCase {
 
 
     public function testGetDefaultFiltersInstance(){
-        $respBuilder = $this->getMock("Api\\Service\\Response\\Builder");
-        $params = $this->getMock("Api\\Service\\Util\\Properties");
-        $sm = $this->getMock("Zend\\ServiceManager\\ServiceLocatorInterface");
+        $respBuilder = $this->getMockBuilder("Api\\Service\\Response\\Builder")->getMock();
+        $params = $this->getMockBuilder("Api\\Service\\Util\\Properties")->getMock();
+        $sm = $this->getMockBuilder("Psr\\Container\\ContainerInterface")->getMock();
 
         $service = new \ApiTest\Service\TestAcceptableAnnotationsService($sm, $params, $respBuilder);
         $helper = new AnnotationsHelper($service, "test4");
@@ -71,9 +71,9 @@ class AnnotationsHelperTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testGetFiltersRelatedToRoleInstance(){
-        $respBuilder = $this->getMock("Api\\Service\\Response\\Builder");
-        $params = $this->getMock("Api\\Service\\Util\\Properties");
-        $sm = $this->getMock("Zend\\ServiceManager\\ServiceLocatorInterface");
+        $respBuilder = $this->getMockBuilder("Api\\Service\\Response\\Builder")->getMock();
+        $params = $this->getMockBuilder("Api\\Service\\Util\\Properties")->getMock();
+        $sm = $this->getMockBuilder("Psr\\Container\\ContainerInterface")->getMock();
 
         $service = new \ApiTest\Service\TestAcceptableAnnotationsService($sm, $params, $respBuilder);
         $helper = new AnnotationsHelper($service, "test5");
@@ -85,9 +85,9 @@ class AnnotationsHelperTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testGetColumnsExtendDefault(){
-        $respBuilder = $this->getMock("Api\\Service\\Response\\Builder");
-        $params = $this->getMock("Api\\Service\\Util\\Properties");
-        $sm = $this->getMock("Zend\\ServiceManager\\ServiceLocatorInterface");
+        $respBuilder = $this->getMockBuilder("Api\\Service\\Response\\Builder")->getMock();
+        $params = $this->getMockBuilder("Api\\Service\\Util\\Properties")->getMock();
+        $sm = $this->getMockBuilder("Psr\\Container\\ContainerInterface")->getMock();
 
         $service = new \ApiTest\Service\TestAcceptableAnnotationsService($sm, $params, $respBuilder);
         $helper = new AnnotationsHelper($service, "test6");
@@ -100,9 +100,9 @@ class AnnotationsHelperTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testGetFiltersExtendDefault(){
-        $respBuilder = $this->getMock("Api\\Service\\Response\\Builder");
-        $params = $this->getMock("Api\\Service\\Util\\Properties");
-        $sm = $this->getMock("Zend\\ServiceManager\\ServiceLocatorInterface");
+        $respBuilder = $this->getMockBuilder("Api\\Service\\Response\\Builder")->getMock();
+        $params = $this->getMockBuilder("Api\\Service\\Util\\Properties")->getMock();
+        $sm = $this->getMockBuilder("Psr\\Container\\ContainerInterface")->getMock();
 
         $service = new \ApiTest\Service\TestAcceptableAnnotationsService($sm, $params, $respBuilder);
         $helper = new AnnotationsHelper($service, "test7");
@@ -116,9 +116,9 @@ class AnnotationsHelperTest extends \PHPUnit_Framework_TestCase {
 
 
     public function testGetDefaultGroupingInstance(){
-        $respBuilder = $this->getMock("Api\\Service\\Response\\Builder");
-        $params = $this->getMock("Api\\Service\\Util\\Properties");
-        $sm = $this->getMock("Zend\\ServiceManager\\ServiceLocatorInterface");
+        $respBuilder = $this->getMockBuilder("Api\\Service\\Response\\Builder")->getMock();
+        $params = $this->getMockBuilder("Api\\Service\\Util\\Properties")->getMock();
+        $sm = $this->getMockBuilder("Psr\\Container\\ContainerInterface")->getMock();
 
         $service = new \ApiTest\Service\TestAcceptableAnnotationsService($sm, $params, $respBuilder);
         $helper = new AnnotationsHelper($service, "test1");
@@ -130,9 +130,9 @@ class AnnotationsHelperTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testGetGroupingsRelatedToRoleInstance(){
-        $respBuilder = $this->getMock("Api\\Service\\Response\\Builder");
-        $params = $this->getMock("Api\\Service\\Util\\Properties");
-        $sm = $this->getMock("Zend\\ServiceManager\\ServiceLocatorInterface");
+        $respBuilder = $this->getMockBuilder("Api\\Service\\Response\\Builder")->getMock();
+        $params = $this->getMockBuilder("Api\\Service\\Util\\Properties")->getMock();
+        $sm = $this->getMockBuilder("Psr\\Container\\ContainerInterface")->getMock();
 
         $service = new \ApiTest\Service\TestAcceptableAnnotationsService($sm, $params, $respBuilder);
         $helper = new AnnotationsHelper($service, "test2");
@@ -144,9 +144,9 @@ class AnnotationsHelperTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testGetGroupingsEmpty(){
-        $respBuilder = $this->getMock("Api\\Service\\Response\\Builder");
-        $params = $this->getMock("Api\\Service\\Util\\Properties");
-        $sm = $this->getMock("Zend\\ServiceManager\\ServiceLocatorInterface");
+        $respBuilder = $this->getMockBuilder("Api\\Service\\Response\\Builder")->getMock();
+        $params = $this->getMockBuilder("Api\\Service\\Util\\Properties")->getMock();
+        $sm = $this->getMockBuilder("Psr\\Container\\ContainerInterface")->getMock();
 
         $service = new \ApiTest\Service\TestAcceptableAnnotationsService($sm, $params, $respBuilder);
         $helper = new AnnotationsHelper($service, "test3");
